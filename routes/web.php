@@ -25,3 +25,8 @@ Route::group(['namespace' => 'Products'], function() {
     Route::post('/desired-products',                        'DesiredProductsController@store');
 });
 
+Route::group(['namespace' => 'Payments'], function() {
+    Route::post('/payments/apple-pay',                      'ApplePayController@store');
+    Route::post('/payments/stripe',                         'StripeController@store');
+    Route::post('/payments/pay-pal',                        'PayPalController@store');
+});
