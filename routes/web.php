@@ -2,17 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::group(['namespace' => 'Products'], function() {
 
-Route::get('/', function () {
-    return view('welcome');
+    Route::group(['middleware' => ['admin','auth']], function () {
+        Route::post('/products',                            'ProductsController@store');
+        Route::delete('/products/{id}',                     'ProductsController@destroy');
+
+        Route::put('/products/{id}/cover-image',            'CoverImageController@update');
+    });
+
+    Route::group(['middleware' => 'auth'], function () {
+        Route::post('/products/{id}/reviews',               'ReviewsController@store');
+
+        Route::post('/liked-reviews',                       'LikedReviewsController@store');
+        Route::delete('/liked-reviews/{id}',                'LikedReviewsController@destroy');
+    });
+
+    Route::post('/products/{id}/orders',                    'OrdersController@store');
+
+    Route::get('/products/{id}/reviews',                    'ReviewsController@index');
+
+    Route::post('/desired-products',                        'DesiredProductsController@store');
 });
+
